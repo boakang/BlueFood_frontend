@@ -59,6 +59,7 @@ Lưu ý: thay IP trên bằng địa chỉ LAN hiện tại của máy chạy ba
 [Backend](https://github.com/boakang/BlueFood_backend)
 
 ## Giao diện
+- Hình Trang Chủ
 ![Hình Trang chủ](https://github.com/boakang/BlueFood_frontend/blob/main/Screenshot%202026-04-07%20155455.png)
-
+- Hình Thông tin lô hàng sau khi quét mã QR trên điện thoại
 ![Hình Thông tin lô hàng sau khi quét mã QR trên điện thoại](https://github.com/boakang/BlueFood_frontend/blob/main/Screenshot%202026-04-07%20152316.png)

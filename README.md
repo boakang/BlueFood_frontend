@@ -1,62 +1,56 @@
 # BlueFood Frontend
 
-React + TypeScript frontend for BlueFood supply chain traceability.
+Giao diện React + TypeScript cho hệ thống truy xuất chuỗi cung ứng BlueFood.
 
-## Prerequisites
+## Yêu cầu
 
-- Node.js LTS
-- Backend API running at http://localhost:5085
-- If you want to scan QR codes from a phone, the backend should be reachable from the phone network or via `BLUEFOOD_PUBLIC_BASE_URL`.
+- Node.js bản LTS
+- Backend đang chạy (mặc định: http://localhost:5085)
+- Nếu quét QR bằng điện thoại, backend cần truy cập được trong mạng nội bộ
 
-Create `BlueFood_frontend/.env` from `.env.example` when you want the frontend to call a non-default backend base URL.
+## Chạy dự án
 
-## Run
-
-1. Open terminal in this folder.
-2. Install dependencies:
+1. Mở terminal tại thư mục này.
+2. Cài thư viện:
 
    npm install
 
-3. Start the frontend:
+3. Chạy frontend:
 
    npm run dev
 
-4. Open the local URL printed by Vite, usually http://localhost:5173
+4. Mở URL Vite hiển thị (thường là http://localhost:5173).
 
-## Environment
+## Biến môi trường
 
-If needed, set the backend base URL:
+Tạo file .env (từ .env.example nếu có) và cấu hình khi cần:
 
 - VITE_API_BASE_URL=http://localhost:5085
 
-If the backend is running on a different host or LAN IP, point `VITE_API_BASE_URL` to that address so the frontend and QR trace page stay in sync.
+Nếu backend chạy ở máy khác hoặc IP LAN khác, đổi giá trị trên để frontend và trang truy xuất QR đồng bộ.
 
-## Main Screens
+## Chức năng chính
 
-- Batch creation
-- Trace lookup by batch code
-- Trace lookup by QR token
-- Certificate creation and attachment
+- Tạo lô hàng
+- Tra cứu theo mã lô
+- Tra cứu theo QR token
+- Tạo và đính kèm chứng chỉ
 
-## Mobile Scanner Module (Flutter)
+## Ứng dụng quét QR (Flutter)
 
-A Flutter scanner module is available at `bluefood_scan_app` in this folder.
+Thư mục: bluefood_scan_app
 
-Purpose:
-- Scan QR directly on phone camera.
-- Extract BlueFood QR token.
-- Call existing backend endpoint `GET /api/trace/{qrToken}`.
-- Optionally open public trace URL.
+Mục đích:
+- Quét QR bằng camera điện thoại
+- Tách QR token BlueFood
+- Gọi API: GET /api/trace/{qrToken}
 
-Run steps:
-1. Install Flutter SDK on your machine.
-2. Open terminal in `BlueFood_frontend/bluefood_scan_app`.
-3. Run `flutter pub get`.
-4. Run on Android with backend base URL override:
+Chạy nhanh:
+1. Cài Flutter SDK.
+2. Vào thư mục bluefood_scan_app.
+3. Chạy lệnh:
 
+   flutter pub get
    flutter run --dart-define=API_BASE_URL=http://192.168.130.68:5085
 
-Notes:
-- Replace `192.168.130.68` with your current backend LAN IP.
-- No SQL Server schema changes are required.
-- Backend APIs and database remain the same.
+Lưu ý: thay IP trên bằng địa chỉ LAN hiện tại của máy chạy backend.

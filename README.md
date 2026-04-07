@@ -1,3 +1,8 @@
+# IS208.Q21 - Nhóm Horizon
+
+Thành viên: Bá Khang, Duy Tài, Mậu Anh, Phương Anh, Quốc Đạt (Nhóm trưởng).
+[Website giới thiệu nhóm (vào bằng mail trường)](https://sites.google.com/gm.uit.edu.vn/horizon/trang-ch%E1%BB%A7?authuser=2&pli=1)
+
 # 1. BlueFood Frontend
 
 Giao diện React + TypeScript cho hệ thống truy xuất chuỗi cung ứng BlueFood.

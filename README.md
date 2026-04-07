@@ -54,3 +54,10 @@ Chạy nhanh:
    flutter run --dart-define=API_BASE_URL=http://192.168.130.68:5085
 
 Lưu ý: thay IP trên bằng địa chỉ LAN hiện tại của máy chạy backend.
+
+## 5. Các Trang khác
+[Backend](https://github.com/boakang/BlueFood_backend)
+
+## Giao diện
+[Hình Trang chủ](https://github.com/boakang/BlueFood_frontend/blob/main/Screenshot%202026-04-07%20152316.png)
+[Hình Thông tin lô hàng sau khi quét mã QR trên điện thoại](https://github.com/boakang/BlueFood_frontend/blob/main/Screenshot%202026-04-07%20152316.png)

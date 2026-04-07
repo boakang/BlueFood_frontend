@@ -1,8 +1,8 @@
-# BlueFood Frontend
+# 1. BlueFood Frontend
 
 Giao diện React + TypeScript cho hệ thống truy xuất chuỗi cung ứng BlueFood.
 
-## Yêu cầu
+## 2. Yêu cầu
 
 - Node.js bản LTS
 - Backend đang chạy (mặc định: http://localhost:5085)
@@ -10,16 +10,16 @@ Giao diện React + TypeScript cho hệ thống truy xuất chuỗi cung ứng B
 
 ## Chạy dự án
 
-1. Mở terminal tại thư mục này.
-2. Cài thư viện:
+2.1. Mở terminal tại thư mục này.
+2.2. Cài thư viện:
 
    npm install
 
-3. Chạy frontend:
+2.3. Chạy frontend:
 
    npm run dev
 
-4. Mở URL Vite hiển thị (thường là http://localhost:5173).
+2.4. Mở URL Vite hiển thị (thường là http://localhost:5173).
 
 ## Biến môi trường
 
@@ -29,14 +29,14 @@ Tạo file .env (từ .env.example nếu có) và cấu hình khi cần:
 
 Nếu backend chạy ở máy khác hoặc IP LAN khác, đổi giá trị trên để frontend và trang truy xuất QR đồng bộ.
 
-## Chức năng chính
+## 3. Chức năng chính
 
 - Tạo lô hàng
 - Tra cứu theo mã lô
 - Tra cứu theo QR token
 - Tạo và đính kèm chứng chỉ
 
-## Ứng dụng quét QR (Flutter)
+## 4. Ứng dụng quét QR (Flutter)
 
 Thư mục: bluefood_scan_app
 
@@ -58,7 +58,7 @@ Lưu ý: thay IP trên bằng địa chỉ LAN hiện tại của máy chạy ba
 ## 5. Các Trang khác
 [Backend](https://github.com/boakang/BlueFood_backend)
 
-## Giao diện
+## 6. Giao diện
 - Hình Trang Chủ
 ![Hình Trang chủ](https://github.com/boakang/BlueFood_frontend/blob/main/Screenshot%202026-04-07%20155455.png)
 - Hình Thông tin lô hàng sau khi quét mã QR trên điện thoại

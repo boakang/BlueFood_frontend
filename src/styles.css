@@ -249,7 +249,7 @@ label {
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.timeline-item > div {
+.timeline-item>div {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -326,6 +326,7 @@ label {
 }
 
 @media (max-width: 960px) {
+
   .hero,
   .grid,
   .form-grid,
@@ -337,4 +338,14 @@ label {
   .shell {
     padding: 1rem;
   }
+}
+
+/* Mau Anh suggestion edit */
+
+strong {
+  margin-left: 0.5em;
+}
+
+.text-gradient {
+  color: #38bdf8;
 }

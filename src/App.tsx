@@ -256,7 +256,7 @@ function DashboardApp() {
       <header className="hero">
         <div>
           <span className="eyebrow">BlueFood Traceability</span>
-          <h1>Dashboard truy xuất chuỗi cung ứng sạch</h1>
+          <h1>Dashboard truy xuất <br /> <span className="text-gradient">chuỗi cung ứng sạch</span></h1>
           <p>
             Web hybrid tối giản, hiện đại, tập trung vào lô hàng, QR trace, chứng chỉ và audit.
           </p>

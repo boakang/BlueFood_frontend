@@ -1,10 +1,15 @@
 import type {
+  BatchManagementRow,
+  CertificateAttachedBatchRow,
   BatchCreateRequest,
   BatchCreateResult,
   BatchTraceItem,
+  CertificateManagementRow,
   CertificateCreateRequest,
-  CertificateRow
-} from './types';
+  CertificateRow,
+  DashboardOverview,
+  PartnerRow
+} from '../types';
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL ?? '';
 
@@ -66,6 +71,44 @@ export function attachCertificate(batchCode: string, certificateId: number, acto
 
 export function getBatchCertificates(batchCode: string) {
   return request<CertificateRow[]>(`/api/batches/${encodeURIComponent(batchCode)}/certificates`);
+}
+
+export function getPartners(partnerType?: number, onlyActive = true) {
+  const params = new URLSearchParams();
+  if (typeof partnerType === 'number') {
+    params.set('partnerType', String(partnerType));
+  }
+
+  params.set('onlyActive', String(onlyActive));
+  return request<PartnerRow[]>(`/api/partners?${params.toString()}`);
+}
+
+export function getDashboardOverview() {
+  return request<DashboardOverview>('/api/dashboard/overview');
+}
+
+export function getManagedBatches(keyword?: string, take = 100) {
+  const params = new URLSearchParams();
+  if (keyword?.trim()) {
+    params.set('keyword', keyword.trim());
+  }
+
+  params.set('take', String(take));
+  return request<BatchManagementRow[]>(`/api/management/batches?${params.toString()}`);
+}
+
+export function getManagedCertificates(keyword?: string, take = 100) {
+  const params = new URLSearchParams();
+  if (keyword?.trim()) {
+    params.set('keyword', keyword.trim());
+  }
+
+  params.set('take', String(take));
+  return request<CertificateManagementRow[]>(`/api/management/certificates?${params.toString()}`);
+}
+
+export function getBatchesByCertificateId(certificateId: number) {
+  return request<CertificateAttachedBatchRow[]>(`/api/management/certificates/${certificateId}/batches`);
 }
 
 export function getQrCodeImageUrl(qrToken: string) {

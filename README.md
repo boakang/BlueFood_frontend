@@ -1,56 +1,119 @@
 # BlueFood Frontend
 
-Giao diện React + TypeScript cho hệ thống truy xuất chuỗi cung ứng BlueFood.
+Frontend React + TypeScript cho hệ thống truy xuất chuỗi cung ứng BlueFood.
 
-## Yêu cầu
+## 1. Tổng quan
 
-- Node.js bản LTS
-- Backend đang chạy (mặc định: http://localhost:5085)
-- Nếu quét QR bằng điện thoại, backend cần truy cập được trong mạng nội bộ
+Project sử dụng:
+- Vite + React + TypeScript
+- Điều hướng theo route (khong con tab trong cung 1 URL)
+- Sidebar ben trai cho cac man hinh dashboard
 
-## Chạy dự án
+Chuc nang hien tai:
+- Dashboard tong quan (so lieu + chart)
+- Workflow tao lo hang theo buoc
+- Quan ly lo hang
+- Quan ly chung chi
+- Trang truy xuat cong khai theo QR token
 
-1. Mở terminal tại thư mục này.
-2. Cài thư viện:
+## 2. Tuong thich backend
 
-   npm install
+Frontend nay duoc dong bo voi backend BlueFood hien tai (cac controller):
+- Batches
+- Certificates
+- Trace
+- Partners
+- Dashboard
+- Management
 
-3. Chạy frontend:
+Backend mac dinh:
+- API: http://localhost:5085
+- Swagger (dev): http://localhost:5085/swagger
 
-   npm run dev
+Luu y CORS backend:
+- Dang cho phep `http://localhost:5173` va `http://127.0.0.1:5173`
+- Neu chay frontend o domain/port khac, can cap nhat CORS ben backend
 
-4. Mở URL Vite hiển thị (thường là http://localhost:5173).
+## 3. Cau hinh frontend
 
-## Biến môi trường
+Tao file `.env` tu `.env.example`:
 
-Tạo file .env (từ .env.example nếu có) và cấu hình khi cần:
+```env
+VITE_API_BASE_URL=http://localhost:5085
+```
 
-- VITE_API_BASE_URL=http://localhost:5085
+Ghi chu:
+- Neu de trong `VITE_API_BASE_URL`, frontend se dung duong dan tuong doi va proxy cua Vite (`/api -> http://localhost:5085`).
+- Neu backend o may khac, dat gia tri day du (vi du `http://192.168.x.x:5085`).
 
-Nếu backend chạy ở máy khác hoặc IP LAN khác, đổi giá trị trên để frontend và trang truy xuất QR đồng bộ.
+## 4. Cau hinh backend de QR public hoat dong dung
 
-## Chức năng chính
+Trong backend, co the dat bien moi truong:
 
-- Tạo lô hàng
-- Tra cứu theo mã lô
-- Tra cứu theo QR token
-- Tạo và đính kèm chứng chỉ
+```env
+BLUEFOOD_PUBLIC_BASE_URL=http://<LAN-IP>:5085/t/
+```
 
-## Ứng dụng quét QR (Flutter)
+Bien nay duoc backend dung de tao public trace URL trong QR, giup mo dung tren thiet bi khac trong cung mang.
 
-Thư mục: bluefood_scan_app
+## 5. Chay du an
 
-Mục đích:
-- Quét QR bằng camera điện thoại
-- Tách QR token BlueFood
-- Gọi API: GET /api/trace/{qrToken}
+```bash
+npm install
+npm run dev
+```
 
-Chạy nhanh:
-1. Cài Flutter SDK.
-2. Vào thư mục bluefood_scan_app.
-3. Chạy lệnh:
+Frontend dev mac dinh: `http://localhost:5173`
 
-   flutter pub get
-   flutter run --dart-define=API_BASE_URL=http://192.168.130.68:5085
+Build production:
 
-Lưu ý: thay IP trên bằng địa chỉ LAN hiện tại của máy chạy backend.
+```bash
+npm run build
+npm run preview
+```
+
+## 6. Route chinh
+
+- `/dashboard/overview`: dashboard tong quan
+- `/dashboard/workflow`: tao lo + trace + gan chung chi theo buoc
+- `/dashboard/batches`: quan ly lo hang
+- `/dashboard/certificates`: quan ly chung chi
+- `/trace/:qrToken`: trang truy xuat cong khai
+
+## 7. API backend frontend dang goi
+
+- `POST /api/batches`
+- `POST /api/batches/{batchCode}/events`
+- `GET /api/batches/{batchCode}/trace`
+- `POST /api/batches/{batchCode}/certificates`
+- `GET /api/batches/{batchCode}/certificates`
+- `GET /api/trace/{qrToken}`
+- `POST /api/certificates`
+- `GET /api/partners`
+- `GET /api/dashboard/overview`
+- `GET /api/management/batches`
+- `GET /api/management/certificates`
+- `GET /api/management/certificates/{certificateId}/batches`
+
+## 8. Mui gio
+
+He thong hien thi thoi gian theo Vietnam time (UTC+07:00) o frontend.
+
+## 9. Ung dung quet QR (Flutter)
+
+Thu muc: `bluefood_scan_app`
+
+Muc dich:
+- Quet QR bang camera dien thoai
+- Tach QR token BlueFood
+- Goi API: `GET /api/trace/{qrToken}`
+
+Chay nhanh:
+
+```bash
+cd bluefood_scan_app
+flutter pub get
+flutter run --dart-define=API_BASE_URL=http://192.168.130.68:5085
+```
+
+Luu y: thay IP bang dia chi LAN hien tai cua may chay backend.

@@ -3,72 +3,69 @@
 
 Frontend React + TypeScript cho hệ thống truy xuất nguồn gốc BlueFood.
 
-## Tính năng chính
+## Chức năng chính
 - Dashboard tổng quan
-- Tạo lô hàng, sinh QR code
-- Cập nhật lộ trình (trace)
-- Gán chứng chỉ cho lô hàng
-- Quản lý lô hàng, chứng chỉ
-- Truy xuất công khai qua QR
+- Tạo lô hàng, sinh QR
+- Cập nhật truy xuất (trace)
+- Gắn chứng chỉ
+- Quản lý lô hàng
+- Quản lý chứng chỉ
+- Trang truy xuất công khai theo QR
 
 ## Giao diện mẫu
 
-### Đăng ký
-![Đăng ký](img/Register.png)
-
 ### Đăng nhập
-![Đăng nhập](img/Login.png)
+![Login](img/Login.png)
+
+### Đăng ký
+![Register](img/Register.png)
 
 ### Dashboard
 ![Dashboard](img/Dashboard.png)
 
 ### Tạo lô hàng
-![Tạo lô](img/Tạo lô.png)
+![Tạo lô hàng](img/Taolohang.png)
 
 ### Truy xuất lô hàng
-![Truy xuất](img/Truy xuất.png)
+![Truy xuất](img/Truyxuat.png)
 
-### Gán chứng chỉ
-![Gán chứng chỉ](img/gán chứng chỉ.png)
+### Gắn chứng chỉ
+![Gắn chứng chỉ](img/Ganchungchi.png)
 
-### Xem danh sách chứng chỉ
-![Quản lý chứng chỉ](img/ql chứng chỉ.png)
+### Xem danh sách chứng chỉ đã gắn
+![Gắn chứng chỉ - Xem DS](img/Ganchungchi_xemds.png)
+
+### Xác nhận lô hàng
+![Xác nhận lô hàng](img/Xacnhanlohang.png)
 
 ### Quản lý lô hàng
-![Quản lý lô](img/ql lô.png)
+![Quản lý lô hàng](img/Quanlylohang.png)
 
-### Xem chi tiết 1 lô
-![Chi tiết lô](img/xem chi tiết 1 lô.png)
+### Quản lý chứng chỉ
+![Quản lý chứng chỉ](img/Quanlychungchi.png)
 
-### Xác nhận lô
-![Xác nhận lô](img/Xác nhận lô.png)
+### Xem chi tiết lô hàng
+![Xem chi tiết lô hàng](img/Xemchitietlohang.png)
+
+### Trang truy xuất công khai (di động)
+![QR thông tin lô hàng](img/QR_thongtinlohang.png)
 
 ## Cài đặt & chạy
-1. Cài đặt:
-	```bash
-	npm install
-	```
-2. Chạy dev:
-	```bash
-	npm run dev
-	```
-3. Build production:
-	```bash
-	npm run build
-	npm run preview
-	```
+```bash
+npm install
+npm run dev
+```
 
-## Cấu hình API
-- Sửa file `.env` từ mẫu `.env.example`:
-  ```env
-  VITE_API_BASE_URL=http://localhost:5085
-  ```
+- Mặc định chạy tại: http://localhost:5173
+- Đổi API backend: sửa file `.env`
 
-## Liên kết nhanh
-- Frontend: http://localhost:5173
-- Swagger backend: http://localhost:5085/swagger
-- Truy xuất công khai: http://localhost:5085/t/{qrToken}
+## Build production
+```bash
+npm run build
+npm run preview
+```
 
-## Lưu ý
-- Hiển thị thời gian theo giờ Việt Nam (UTC+07:00).
-- Nếu chạy frontend ở domain/port khác, cần cập nhật CORS backend.
+## Thông tin thêm
+- Hiển thị thời gian theo giờ Việt Nam (UTC+07:00)
+- Đồng bộ với backend BlueFood (API: http://localhost:5085)
+- Nếu chạy frontend ở domain/port khác, cần cấu hình lại CORS backend.

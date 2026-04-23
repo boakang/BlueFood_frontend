@@ -87,6 +87,12 @@ export function getDashboardOverview() {
   return request<DashboardOverview>('/api/dashboard/overview');
 }
 
+export function logout() {
+  return request<{ message: string }>('/api/auth/logout', {
+    method: 'POST'
+  });
+}
+
 export function getManagedBatches(keyword?: string, take = 100) {
   const params = new URLSearchParams();
   if (keyword?.trim()) {

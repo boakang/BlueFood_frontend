@@ -47,7 +47,7 @@ Frontend React + TypeScript cho hệ thống truy xuất nguồn gốc BlueFood.
 ### Xem chi tiết lô hàng
 ![Xem chi tiết lô hàng](img/Xemchitietlohang.png)
 
-### Trang truy xuất công khai (di động)
+### Thông tin lô từ quét mã QR, lưu ý máy chạy demo với điện thoại quét phải cùng chung wifi
 ![QR thông tin lô hàng](img/QR_thongtinlohang.png)
 
 ## Cài đặt & chạy

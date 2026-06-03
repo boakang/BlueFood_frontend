@@ -1,7 +1,9 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { BatchManagementRow } from '../types';
 import { formatDate } from '../utils/formatDate';
+
+const PAGE_SIZE = 15;
 
 interface BatchManagementTabProps {
   managedBatches: BatchManagementRow[];
@@ -24,6 +26,26 @@ export function BatchManagementTab({
   handleToggleBatchDetails,
   expandedBatchLoadingId
 }: BatchManagementTabProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.max(1, Math.ceil(managedBatches.length / PAGE_SIZE));
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [managedBatches.length]);
+
+  useEffect(() => {
+    setCurrentPage((prev) => Math.min(prev, totalPages));
+  }, [totalPages]);
+
+  const pagedBatches = useMemo(() => {
+    const start = (currentPage - 1) * PAGE_SIZE;
+    return managedBatches.slice(start, start + PAGE_SIZE);
+  }, [managedBatches, currentPage]);
+
+  const visibleStart = managedBatches.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
+  const visibleEnd = Math.min(currentPage * PAGE_SIZE, managedBatches.length);
+
   return (
     <section className="panel">
       <h2>Quản lý lô hàng</h2>
@@ -57,7 +79,7 @@ export function BatchManagementTab({
                 <td colSpan={8} className="empty-cell">Không có dữ liệu lô hàng.</td>
               </tr>
             )}
-            {managedBatches.map((row) => {
+            {pagedBatches.map((row) => {
               const detail = batchDetailsById[row.batchId];
               const isExpanded = expandedBatchId === row.batchId;
               const isLoadingDetail = expandedBatchLoadingId === row.batchId;
@@ -135,6 +157,29 @@ export function BatchManagementTab({
             })}
           </tbody>
         </table>
+      </div>
+
+      <div className="management-pagination">
+        <span className="management-pagination__summary">
+          Hiển thị {visibleStart}-{visibleEnd} / {managedBatches.length}
+        </span>
+        <div className="management-pagination__controls">
+          <button
+            className="secondary"
+            onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+            disabled={currentPage === 1}
+          >
+            Trang trước
+          </button>
+          <span>Trang {currentPage}/{totalPages}</span>
+          <button
+            className="secondary"
+            onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+            disabled={currentPage === totalPages}
+          >
+            Trang sau
+          </button>
+        </div>
       </div>
     </section>
   );

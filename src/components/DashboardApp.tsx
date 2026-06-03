@@ -31,6 +31,7 @@ import { OverviewTab } from './OverviewTab';
 import { WorkflowTab } from './WorkflowTab';
 import { BatchManagementTab } from './BatchManagementTab';
 import { CertificateManagementTab } from './CertificateManagementTab';
+import { AdminUsersPage } from './AdminUsersPage';
 
 import {
   BatchCreateResult,
@@ -49,6 +50,7 @@ export function DashboardApp() {
 
   // Lấy username từ localStorage (sau khi đăng nhập thành công)
   const username = localStorage.getItem('username') || defaultActor;
+  const currentRole = localStorage.getItem('role') || 'User';
 
   const [status, setStatus] = useState('Sẵn sàng');
   const [batchCode, setBatchCode] = useState(`BF-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`);
@@ -85,6 +87,7 @@ export function DashboardApp() {
   const [timelineGranularity, setTimelineGranularity] = useState<'hour' | 'day' | 'week' | 'month'>('day');
 
   const activeMainTab = useMemo(() => getMainTabFromPath(location.pathname), [location.pathname]);
+  const visibleTabs = useMemo(() => MAIN_TABS.filter((tab) => tab.id !== 'admin-users' || currentRole === 'Admin'), [currentRole]);
 
   const openMainTab = useCallback((tabId: MainTab) => {
     navigate(MAIN_TAB_PATHS[tabId]);
@@ -110,6 +113,24 @@ export function DashboardApp() {
   const tryOpenWorkflowStep = useCallback((step: WorkflowStep) => {
     if (canOpenWorkflowStep(step)) setWorkflowStep(step);
   }, [canOpenWorkflowStep]);
+
+  const handleConfirmAndResetWorkflow = useCallback(() => {
+    const nextBatchCode = `BF-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`;
+
+    setBatchCode(nextBatchCode);
+    setProductName('');
+    setCreatedBatch(null);
+    setTraceToken('');
+    setTraceRows([]);
+    setTraceBatchInput(nextBatchCode);
+    setTraceQrInput('');
+    setSelectedExistingCertificateId(null);
+    setSelectedCertificateBatches([]);
+    setTraceStepCompleted(false);
+    setCertificateStepCompleted(false);
+    setWorkflowStep('create');
+    setStatus('Sẵn sàng');
+  }, []);
 
   const chartEventTypeData = useMemo<ChartPoint[]>(() => 
     (dashboardOverview?.eventTypeDistribution || []).map(item => ({
@@ -191,6 +212,12 @@ export function DashboardApp() {
     if (!canOpenWorkflowStep(workflowStep)) setWorkflowStep('create');
   }, [activeMainTab, workflowStep, createdBatch, traceStepCompleted, certificateStepCompleted]);
 
+  useEffect(() => {
+    if (activeMainTab === 'admin-users' && currentRole !== 'Admin') {
+      navigate(MAIN_TAB_PATHS.overview, { replace: true });
+    }
+  }, [activeMainTab, currentRole, navigate]);
+
   useEffect(() => { setFromPartnerId(farmPartnerId); }, [farmPartnerId]);
 
   async function handleCreateBatchAction() {
@@ -198,7 +225,6 @@ export function DashboardApp() {
       setStatus('Vui lòng chọn partner nông trại trước khi tạo lô.');
       return;
     }
-    setStatus('Đang tạo lô hàng...');
     try {
       const result = await createBatch({
         batchCode,
@@ -213,7 +239,7 @@ export function DashboardApp() {
       setTraceQrInput(result.qrToken);
       setTraceBatchInput(result.batchCode);
       await Promise.all([loadDashboardOverviewData(false), loadManagedBatches(batchKeyword, false)]);
-      setStatus(`Đã tạo lô ${result.batchCode}. QR và trace URL đã sẵn sàng.`);
+      setStatus('Sẵn sàng');
       navigate(MAIN_TAB_PATHS.workflow);
     } catch (error) {
       setStatus(`Lỗi tạo lô: ${error instanceof Error ? error.message : String(error)}`);
@@ -225,7 +251,6 @@ export function DashboardApp() {
       setStatus('Vui lòng chọn partner From/To trước khi ghi nhận SHIPPED.');
       return;
     }
-    setStatus('Đang thêm trạng thái...');
     try {
       await addBatchEvent(traceBatchInput, {
         eventType: 'SHIPPED',
@@ -236,38 +261,35 @@ export function DashboardApp() {
         actor
       });
       await Promise.all([loadDashboardOverviewData(false), loadManagedBatches(batchKeyword, false)]);
-      setStatus(`Đã ghi nhận event cho ${traceBatchInput}`);
+      setStatus('Sẵn sàng');
     } catch (error) {
       setStatus(`Lỗi thêm event: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
   async function handleLoadTraceAction() {
-    setStatus('Đang tải trace...');
     try {
       const rows = await getBatchTrace(traceBatchInput);
       setTraceRows(rows);
       if (rows.length > 0) setTraceStepCompleted(true);
-      setStatus(`Đã tải trace của ${traceBatchInput}.`);
+      setStatus('Sẵn sàng');
     } catch (error) {
       setStatus(`Lỗi tải trace: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
   async function handleLoadTraceByQrAction() {
-    setStatus('Đang tải trace theo QR...');
     try {
       const rows = await getTraceByQr(traceQrInput);
       setTraceRows(rows);
       if (rows.length > 0) setTraceStepCompleted(true);
-      setStatus(`Đã tải trace theo QR ${traceQrInput}.`);
+      setStatus('Sẵn sàng');
     } catch (error) {
       setStatus(`Lỗi QR trace: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
   async function handleCreateCertificateAction() {
-    setStatus('Đang tạo chứng chỉ...');
     try {
       const result = await createCertificate({
         certificateCode: certCode,
@@ -281,14 +303,14 @@ export function DashboardApp() {
       setCertificateId(result.certificateId);
       setSelectedExistingCertificateId(result.certificateId);
       await Promise.all([loadDashboardOverviewData(false), loadManagedCertificates(certificateKeyword, false)]);
-      setStatus(`Đã tạo chứng chỉ ID=${result.certificateId}.`);
+      setStatus('Sẵn sàng');
     } catch (error) {
       if (error instanceof Error && error.message.includes('đã tồn tại')) {
         const existing = managedCertificates.find(item => item.certificateCode.trim().toLowerCase() === certCode.trim().toLowerCase());
         if (existing) {
           setSelectedExistingCertificateId(existing.certificateId);
           setCertificateId(existing.certificateId);
-          setStatus(`Mã chứng chỉ đã tồn tại. Đã chọn chứng chỉ ID=${existing.certificateId}.`);
+          setStatus('Sẵn sàng');
           return;
         }
       }
@@ -299,7 +321,6 @@ export function DashboardApp() {
   async function handleAttachCertificateAction() {
     const targetCertificateId = selectedExistingCertificateId ?? certificateId;
     if (!targetCertificateId) return setStatus('Vui lòng chọn chứng chỉ.');
-    setStatus('Đang gắn chứng chỉ...');
     try {
       await attachCertificate(traceBatchInput, targetCertificateId, actor);
       const rows = await getBatchCertificates(traceBatchInput);
@@ -310,7 +331,7 @@ export function DashboardApp() {
         loadManagedBatches(batchKeyword, false),
         loadManagedCertificates(certificateKeyword, false)
       ]);
-      setStatus(`Đã gắn chứng chỉ ${targetCertificateId} cho ${traceBatchInput}.`);
+      setStatus('Sẵn sàng');
     } catch (error) {
       setStatus(`Lỗi gắn chứng chỉ: ${error instanceof Error ? error.message : String(error)}`);
     }
@@ -322,7 +343,7 @@ export function DashboardApp() {
     try {
       const rows = await getBatchesByCertificateId(targetCertificateId);
       setSelectedCertificateBatches(rows);
-      if (rows.length === 0) setStatus('Chứng chỉ chưa được gắn cho lô nào.');
+      setStatus('Sẵn sàng');
     } catch (error) {
       if (setStatusOnError) setStatus(`Lỗi: ${error instanceof Error ? error.message : String(error)}`);
     }
@@ -364,6 +385,8 @@ export function DashboardApp() {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('userId'); // Assuming userId is stored too
+    localStorage.removeItem('role');
+    localStorage.removeItem('status');
     navigate('/login');
   }
 
@@ -372,7 +395,7 @@ export function DashboardApp() {
       <aside className="left-sidebar" aria-label="Main navigation tabs">
         <div className="sidebar-brand">BlueFood Traceability</div>
         <div className="sidebar-menu" role="tablist" aria-orientation="vertical">
-          {MAIN_TABS.map((tab) => {
+          {visibleTabs.map((tab) => {
             const active = activeMainTab === tab.id;
             return (
               <button
@@ -451,6 +474,7 @@ export function DashboardApp() {
               certificateStepCompleted={certificateStepCompleted}
               selectedCertificateBatches={selectedCertificateBatches}
               traceToken={traceToken}
+              handleConfirmAndResetWorkflow={handleConfirmAndResetWorkflow}
             />
           )}
           {activeMainTab === 'batch-management' && (
@@ -476,6 +500,7 @@ export function DashboardApp() {
               managedCertificates={managedCertificates}
             />
           )}
+          {activeMainTab === 'admin-users' && <AdminUsersPage />}
         </main>
         
         {status !== 'Sẵn sàng' && (

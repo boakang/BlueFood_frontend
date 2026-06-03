@@ -9,6 +9,7 @@ import { DashboardApp } from './DashboardApp';
 import { PublicTracePage } from './PublicTracePage';
 import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
+import { AdminUsersPage } from './AdminUsersPage';
 
 function PublicTraceRoute() {
   const { qrToken } = useParams<{ qrToken: string }>();
@@ -25,6 +26,7 @@ export default function App() {
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/admin/users" element={<AdminUsersPage />} />
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/dashboard/:tab" element={<PrivateRoute><DashboardApp /></PrivateRoute>} />
       <Route path="/trace/:qrToken" element={<PublicTraceRoute />} />

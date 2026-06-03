@@ -14,9 +14,11 @@ import type {
 const baseUrl = import.meta.env.VITE_API_BASE_URL ?? '';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  const token = localStorage.getItem('token');
   const response = await fetch(`${baseUrl}${path}`, {
     headers: {
       'Content-Type': 'application/json',
+      ...(token ? { 'X-BlueFood-UserId': token } : {}),
       ...(init?.headers ?? {})
     },
     ...init
@@ -119,4 +121,14 @@ export function getBatchesByCertificateId(certificateId: number) {
 
 export function getQrCodeImageUrl(qrToken: string) {
   return `${baseUrl}/api/trace/${encodeURIComponent(qrToken)}/qrcode`;
+}
+
+export function getPendingUsers() {
+  return request<Array<{ userId: number; username: string; email?: string | null; role?: string | null; status: string; createdAt: string }>>('/api/admin/users/pending');
+}
+
+export function approveUser(username: string) {
+  return request<{ message: string }>(`/api/admin/users/${encodeURIComponent(username)}/approve`, {
+    method: 'POST'
+  });
 }

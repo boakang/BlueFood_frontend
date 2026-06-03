@@ -16,10 +16,13 @@ export default function LoginPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       });
-      if (!res.ok) throw new Error('Đăng nhập thất bại');
-      const data = await res.json();
+      const text = await res.text();
+      if (!res.ok) throw new Error(text || 'Đăng nhập thất bại');
+      const data = text ? JSON.parse(text) : {};
       localStorage.setItem('token', data.token);
       localStorage.setItem('username', data.username || username);
+      localStorage.setItem('role', data.role || 'User');
+      localStorage.setItem('status', data.status || 'Active');
       navigate('/dashboard/overview');
     } catch (err: any) {
       setError(err.message || 'Lỗi không xác định');

@@ -48,6 +48,7 @@ interface WorkflowTabProps {
   selectedCertificateBatches: CertificateAttachedBatchRow[];
   // Step 4: Confirm
   traceToken: string;
+  handleConfirmAndResetWorkflow: () => void;
 }
 
 export function WorkflowTab(props: WorkflowTabProps) {
@@ -79,7 +80,8 @@ export function WorkflowTab(props: WorkflowTabProps) {
     handleLoadBatchesBySelectedCertificate,
     certificateStepCompleted,
     selectedCertificateBatches,
-    traceToken
+    traceToken,
+    handleConfirmAndResetWorkflow
   } = props;
 
   const toPartnerValue = (value: string) => {
@@ -234,9 +236,9 @@ export function WorkflowTab(props: WorkflowTabProps) {
         <div className="list certificate-list">
           {selectedCertificateBatches.map((row) => (
             <article key={row.batchId} className="cert-card">
-              <strong>{row.batchCode} - {row.productName}</strong>
-              <span>Trạng thái: {row.currentStatus}</span>
-              <small>Gắn lúc {formatDate(row.attachedAt)} bởi {row.attachedBy}</small>
+              <strong style={{ color: '#ffffff' }}>{row.batchCode} - {row.productName}</strong>
+              <span style={{ color: '#ffffff' }}>Trạng thái: {row.currentStatus}</span>
+              <small style={{ color: '#ffffff' }}>Gắn lúc {formatDate(row.attachedAt)} bởi {row.attachedBy}</small>
             </article>
           ))}
         </div>
@@ -265,6 +267,9 @@ export function WorkflowTab(props: WorkflowTabProps) {
             <strong>{traceStepCompleted ? 'Trace đã truy xuất được' : 'Chưa đạt'}</strong>
             <strong>{certificateStepCompleted ? 'Chứng chỉ đã gắn thành công' : 'Chưa đạt'}</strong>
           </article>
+        </div>
+        <div className="actions">
+          <button onClick={handleConfirmAndResetWorkflow}>Xác nhận</button>
         </div>
       </section>
     );

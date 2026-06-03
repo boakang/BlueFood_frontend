@@ -5,6 +5,7 @@ export default function RegisterPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [role, setRole] = useState('Supplier');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
@@ -17,10 +18,12 @@ export default function RegisterPage() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password, email })
+        body: JSON.stringify({ username, password, email, role })
       });
-      if (!res.ok) throw new Error('Đăng ký thất bại');
-      setSuccess('Đăng ký thành công! Vui lòng đăng nhập.');
+      const text = await res.text();
+      if (!res.ok) throw new Error(text || 'Đăng ký thất bại');
+      const data = text ? JSON.parse(text) : { message: 'Đăng ký thành công!' };
+      setSuccess(data.message || 'Đăng ký thành công!');
       setTimeout(() => navigate('/login'), 1200);
     } catch (err: any) {
       setError(err.message || 'Lỗi không xác định');
@@ -65,6 +68,20 @@ export default function RegisterPage() {
               required
               style={{ width: '100%', border: '1px solid #ccc', borderRadius: 10, padding: '16px 18px', fontSize: 20, outline: 'none', background: '#f7f7f7', color: '#222', minHeight: 58, boxSizing: 'border-box' }}
             />
+          </div>
+          <div style={{ marginBottom: 30 }}>
+            <label style={{ display: 'block', marginBottom: 10, fontWeight: 600, fontSize: 18 }}>Vai trò</label>
+            <select
+              value={role}
+              onChange={e => setRole(e.target.value)}
+              style={{ width: '100%', border: '1px solid #ccc', borderRadius: 10, padding: '16px 18px', fontSize: 20, outline: 'none', background: '#f7f7f7', color: '#222', minHeight: 58, boxSizing: 'border-box' }}
+            >
+              <option value="Supplier">Nhà cung cấp</option>
+              <option value="Shipper">Đơn vị vận chuyển</option>
+              <option value="Farmer">Nông trại</option>
+              <option value="Store">Cửa hàng</option>
+              <option value="User">Người dùng thường</option>
+            </select>
           </div>
           <button type="submit" style={{ width: '100%', padding: '16px 18px', background: '#222', color: '#fff', border: 'none', borderRadius: 10, fontWeight: 600, fontSize: 20, cursor: 'pointer', marginBottom: 16, minHeight: 58 }}>
             Register

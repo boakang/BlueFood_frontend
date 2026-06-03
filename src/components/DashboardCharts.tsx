@@ -20,8 +20,8 @@ export function PieChart({ complete, total }: { complete: number; total: number 
         />
       </svg>
       <div className="pie-label">
-        <strong>{Math.round(percent * 100)}%</strong>
-        <span>{complete} / {total} lô có chứng chỉ</span>
+        <strong style={{ color: '#ffffff' }}>{Math.round(percent * 100)}%</strong>
+        <span style={{ color: '#ffffff' }}>{complete} / {total} lô có chứng chỉ</span>
       </div>
     </div>
   );
@@ -45,7 +45,7 @@ export function LineChart({ data }: { data: ChartPoint[] }) {
       </svg>
       <div className="line-legend">
         {data.map((item) => (
-          <span key={item.label}>{item.label}: <strong style={{ color: '#22d3ee' }}>{item.value}</strong></span>
+          <span key={item.label} style={{ color: '#ffffff' }}>{item.label}: <strong style={{ color: '#ffffff' }}>{item.value}</strong></span>
         ))}
       </div>
     </div>
@@ -70,8 +70,8 @@ export function BarChart({ data }: { data: ChartPoint[] }) {
                 }} 
               />
             </div>
-            <strong>{item.value}</strong>
-            <span>{item.label}</span>
+            <strong style={{ color: '#ffffff' }}>{item.value}</strong>
+            <span style={{ color: '#ffffff' }}>{item.label}</span>
           </div>
         );
       })}

@@ -210,10 +210,15 @@ select:focus {
 
 .hero {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1fr;
   gap: 1.5rem;
   align-items: stretch;
   margin-bottom: 1.5rem;
+}
+
+.one-line-title {
+  white-space: nowrap;
+  font-size: clamp(2.2rem, 3.3vw, 4rem);
 }
 
 .eyebrow,
@@ -746,6 +751,37 @@ label {
   text-align: center;
 }
 
+.management-pagination {
+  margin-top: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: #9ab2c9;
+  font-size: 0.86rem;
+}
+
+.management-pagination__summary {
+  white-space: nowrap;
+}
+
+.management-pagination__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.management-pagination__controls > span {
+  min-width: 90px;
+  text-align: center;
+  color: #d7e1ea;
+}
+
+.management-pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .public-shell {
   min-height: 100vh;
   padding: 1.5rem;
@@ -812,6 +848,12 @@ label {
   }
 }
 
+@media (max-width: 1280px) {
+  .one-line-title {
+    white-space: normal;
+  }
+}
+
 @media (max-width: 960px) {
   .dashboard-frame {
     grid-template-columns: 1fr;
@@ -848,6 +890,16 @@ label {
   .management-toolbar {
     grid-template-columns: 1fr;
   }
+
+  .management-pagination {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .management-pagination__controls {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
 
 .input-readonly {
@@ -855,4 +907,21 @@ label {
   color: #eff6ff !important;
   cursor: not-allowed;
   border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.panel-workflow .overview-subtitle,
+.panel-workflow .result-box span,
+.panel-workflow .result-box strong,
+.panel-workflow .cert-card strong,
+.panel-workflow .cert-card span,
+.panel-workflow .cert-card small,
+.panel-workflow .hint,
+.panel-workflow .workflow-subtab small {
+  color: #ffffff !important;
+}
+
+.status-toast {
+  color: #ffffff;
+  background: rgba(9, 16, 29, 0.95);
+  border: 1px solid rgba(56, 189, 248, 0.35);
 }

@@ -72,3 +72,6 @@ npm run preview
 - Hiển thị thời gian theo giờ Việt Nam (UTC+07:00)
 - Đồng bộ với backend BlueFood (API: http://localhost:5085)
 - Nếu chạy frontend ở domain/port khác, cần cấu hình lại CORS backend.
+
+## 9. Các Trang khác
+[Backend](https://github.com/boakang/BlueFood_backend)

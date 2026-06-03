@@ -23,6 +23,9 @@ Frontend React + TypeScript cho hệ thống truy xuất nguồn gốc BlueFood.
 ### Dashboard
 ![Dashboard](img/Dashboard.png)
 
+### Trang Admin - duyệt tài khoản
+![Admin - duyệt tài khoản](img/Admin_DuyetTaiKhoan.png)
+
 ### Tạo lô hàng
 ![Tạo lô hàng](img/Taolohang.png)
 
